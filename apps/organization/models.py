@@ -20,9 +20,11 @@ class CourseOrg(models.Model):
     desc = models.TextField(verbose_name='机构描述')
     click_nums = models.IntegerField(default=0, verbose_name='点击数')
     fav_nums = models.IntegerField(default=0, verbose_name='收藏数')
-    image = models.ImageField(upload_to='org/%y/%m', verbose_name='描述图', max_length=100)
+    image = models.ImageField(upload_to='org/%y/%m',
+                              verbose_name='描述图', max_length=100)
     address = models.CharField(max_length=150, verbose_name='机构地址')
-    city = models.ForeignKey(CityDict, verbose_name='所在城市', on_delete=models.DO_NOTHING)
+    city = models.ForeignKey(
+        CityDict, verbose_name='所在城市', on_delete=models.DO_NOTHING)
     add_time = models.DateTimeField(auto_now_add=True, verbose_name='增加时间')
 
     def __str__(self):
@@ -34,7 +36,8 @@ class CourseOrg(models.Model):
 
 
 class Teacher(models.Model):
-    org = models.ForeignKey(CourseOrg, verbose_name='所属机构', on_delete=models.DO_NOTHING)
+    org = models.ForeignKey(CourseOrg, verbose_name='所属机构',
+                            on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=50, verbose_name='教师名')
     work_years = models.IntegerField(default=0, verbose_name='工作年限')
     work_company = models.CharField(max_length=50, verbose_name='就职公司')

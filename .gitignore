@@ -105,4 +105,18 @@ venv.bak/
 
 \.idea/
 
+apps/courses/migrations/0001_initial\.py
+
+apps/operation/migrations/0001_initial\.py
+
+apps/operation/migrations/0002_auto_20190521_2048\.py
+
+apps/organization/migrations/0001_initial\.py
+
+apps/users/migrations/0001_initial\.py
+
+\.vscode/
+
+apps/operation/migrations/0002_auto_20190623_0912\.py
+
 extra_apps/xadmin/

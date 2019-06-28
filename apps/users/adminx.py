@@ -16,7 +16,8 @@ class GlobalSetting(object):
 
 
 class UserProfileAdmin(object):
-    list_display = ('nick_name', 'birthday', 'gender', 'address', 'mobile', 'image')
+    list_display = ('nick_name', 'birthday', 'gender',
+                    'address', 'mobile', 'image')
 
 
 class EmailVerifyRecordAdmin(object):
@@ -31,5 +32,5 @@ class BannerAdmin(object):
 xadmin.site.register(EmailVerifyRecord, EmailVerifyRecordAdmin)
 xadmin.site.register(Banner, BannerAdmin)
 
-xadmin.site.register(views.BaseAdminView,BaseSetting)
-xadmin.site.register(views.CommAdminView,GlobalSetting)
+xadmin.site.register(views.BaseAdminView, BaseSetting)
+xadmin.site.register(views.CommAdminView, GlobalSetting)

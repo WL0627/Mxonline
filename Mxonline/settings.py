@@ -27,7 +27,7 @@ SECRET_KEY = 'bvx#rast-foacf+)8gp7b57m&zp%i!)do!w@4fezotc%xtp*lh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -45,8 +45,14 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'organization.apps.OrganizationConfig',
     'operation.apps.OperationConfig',
+
+    'captcha',
 ]
+# 复写user模型
 AUTH_USER_MODEL = 'users.UserProfile'
+# 自定义用户登录
+AUTHENTICATION_BACKENDS = ('users.views.CustomBackend',)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,7 +68,7 @@ ROOT_URLCONF = 'Mxonline.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +132,12 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+# 邮箱设置
+EMAIL_HOST = "smtp.qq.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '1290139062@qq.com'
+EMAIL_HOST_PASSWORD = 'otgouxbfftpjhjia'
+EMAIL_USE_TLS = True
+EMAIL_FROM = '1290139062@qq.com'
