@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, View
 
 from utils.email_send import send_register_email
 
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ForgetForm
 from .models import UserProfile, EmailVerifyRecord
 
 
@@ -25,7 +25,6 @@ class CustomBackend(ModelBackend):
         try:
             user = UserProfile.objects.get(
                 Q(username=username) | Q(email=username))
-            print(user, password, user.check_password(password))
             if user.check_password(password):
                 return user
         except Exception as e:
@@ -68,8 +67,9 @@ class RegisterView(View):
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
             user_name = request.POST['email']
+            if UserProfile.objects.filter(username=user_name):
+                return render(request, 'register.html', {'register_form': register_form, 'msg': '该账号已存在'})
             pass_word = request.POST['password']
-            # password = make_password(pass_word)
             user_profile = UserProfile.objects.create_user(username=user_name, email=user_name, password=pass_word)
             user_profile.is_active = False
             user_profile.save()
@@ -88,4 +88,36 @@ class ActiveUserView(View):
                 user_profile = UserProfile.objects.get(email=record_email)
                 user_profile.is_active = True
                 user_profile.save()
-        return render(request, 'login.html', {})
+                return render(request, 'login.html', {})
+        else:
+            return render(request, 'active_fail.html')
+
+
+# 重置密码
+class ResetUserView(View):
+    def get(self, request, reset_code):
+        return render(request, 'password_reset.html', {})
+
+    def post(self, request, reset_code):
+        record = EmailVerifyRecord.objects.filter(code=reset_code)
+        if record:
+            for i in record:
+                email = i.email
+                user_profile = UserProfile.objects.filter(email=email)
+
+
+# 找回密码
+class ForgetPwdView(View):
+    def get(self, request):
+        forget_form = ForgetForm()
+        return render(request, 'forgetpwd.html', {'forget_from': forget_form})
+
+    def post(self, request):
+        forget_form = ForgetForm(request.POST)
+        if forget_form.is_valid():
+            email = request.POST['email']
+            send_register_email(email, 'forget')
+            return render(request, 'send_success.html')
+
+        else:
+            return render(request, 'forgetpwd.html', {'forget_form': forget_form})
